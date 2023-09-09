@@ -49,3 +49,27 @@ Run Shadcn CLI
 npx shadcn-ui@latest init
 ```
 
+Clerk Authentication
+- create an account [here](https://clerk.com/)
+- Set Environment Keys in .env
+```sh
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_aGXXXXXXXXXX
+CLERK_SECRET_KEY=sk_test_WFgWXXXXXXXXXXXXXXXX
+```
+
+- Install @clerk/nextjs
+```sh
+npm install @clerk/nextjs
+```
+- Mount <ClerkProvider />
+  Updating app/layout.tsx with <ClerkProvider /> wrapper.
+- Protect application
+  creating `middleware.ts` file at the root
+- build sign-up and sing-in pages.
+- Add more environmental variables to .env
+  ```sh
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+  ```
