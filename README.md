@@ -151,3 +151,13 @@ After `schema.prisma` file is being edited:
 npx prisma generate
 npx prisma db push
 ```
+
+checking db in localhost:
+```sh
+npx prisma studio
+```
+
+Seeding category names
+```sh
+node scripts/seed.ts
+```
