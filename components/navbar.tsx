@@ -26,7 +26,7 @@ export const Navbar = () => {
               font.className
             )}
           >
-            ai.character.creator
+            CharacterChat
           </h1>
         </Link>
       </div>
