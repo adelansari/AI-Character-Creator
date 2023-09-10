@@ -161,3 +161,32 @@ Seeding category names
 ```sh
 node scripts/seed.ts
 ```
+
+Adding character creation form
+```sh
+npx shadcn-ui@latest add form
+```
+Adding Textarea
+```sh
+npx shadcn-ui@latest add form
+```
+
+Adding separator
+```sh
+npx shadcn-ui@latest add separator
+```
+
+Adding `Select` component
+```sh
+npx shadcn-ui@latest add select
+```
+
+Setting up Cloudinary for image upload
+In `.env` file
+```sh
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="CloudNameHere"
+```
+Installing package:
+```sh
+npm i next-cloudinary
+```
