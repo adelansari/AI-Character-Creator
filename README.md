@@ -113,3 +113,14 @@ npm i next-themes@latest
   ```sh
   npx shadcn-ui@latest add sheet
 ```
+
+### Adding Search Filter
+
+Display a form input field
+```sh
+npx shadcn-ui@latest add input
+```
+
+```sh
+npm install query-string
+```
