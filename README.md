@@ -73,3 +73,39 @@ npm install @clerk/nextjs
     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
   ```
+
+Adding button component from shadcn ui:
+```sh
+npx shadcn-ui@latest add button
+```
+
+Adding Dark mode
+
+- installing `next-themes`
+```sh
+npm i next-themes@latest
+```
+
+- creating a theme provider
+  components/theme-provider.tsx
+  ```sh
+  "use client"
+ 
+  import * as React from "react"
+  import { ThemeProvider as NextThemesProvider } from "next-themes"
+  import { type ThemeProviderProps } from "next-themes/dist/types"
+  
+  export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+    return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+  }
+  ```
+- Adding the `ThemeProvider` to root layout.
+  ```sh
+  <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    {children}
+  </ThemeProvider>
+  ```
+- Adding theme toggle following [this](https://ui.shadcn.com/docs/dark-mode/next)
+  ```sh
+  npx shadcn-ui@latest add dropdown-menu
+  ```
