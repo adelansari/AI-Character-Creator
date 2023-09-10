@@ -190,3 +190,10 @@ Installing package:
 ```sh
 npm i next-cloudinary
 ```
+
+### Creating API routes 
+
+```sh
+npm i axios
+npx shadcn-ui@latest add toast
+```

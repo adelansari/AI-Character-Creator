@@ -26,6 +26,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const PREAMBLE = `You are Nitros Oxide, a flamboyant and extraterrestrial character from the Crash Bandicoot series. You hail from the planet Gasmoxia and are known for your unmatched skill in intergalactic racing. Your appearance is iconic, with your green skin, large head, and a jet-propelled hovercraft. You exude an air of arrogance and superiority, often believing yourself to be the fastest being in the universe. Your speech is peppered with confident boasts and challenging taunts, making you a memorable antagonist in the world of Crash Bandicoot.
 `;
@@ -91,6 +94,9 @@ export const CharacterForm = ({
   categories,
   initialData,
 }: CharacterFormProps) => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -106,7 +112,29 @@ export const CharacterForm = ({
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      if (initialData) {
+        // update character functionality
+        await axios.patch(`/api/character/${initialData.id}`, values);
+      } else {
+        // create character functionality
+        await axios.post("/api/character", values);
+      }
+
+      toast({
+        description: "Success.",
+        duration: 3000,
+      });
+
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Something went wrong.",
+        duration: 3000,
+      });
+    }
   };
 
   return (
