@@ -112,7 +112,7 @@ npm i next-themes@latest
 - Adding sheet component
   ```sh
   npx shadcn-ui@latest add sheet
-```
+  ```
 
 ### Adding Search Filter
 
@@ -123,4 +123,31 @@ npx shadcn-ui@latest add input
 
 ```sh
 npm install query-string
+```
+
+### Adding category filter
+Initializing prisma
+```sh
+npm i -D prisma
+npx prisma init
+```
+Creating an account with 'planetscale'
+Creating DB with prisma and mysql provider
+Modifying 'prisma/schema.prisma' file:
+```sh
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+```
+
+After `schema.prisma` file is being edited:
+```sh
+npx prisma generate
+npx prisma db push
 ```
