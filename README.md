@@ -109,3 +109,7 @@ npm i next-themes@latest
   ```sh
   npx shadcn-ui@latest add dropdown-menu
   ```
+- Adding sheet component
+  ```sh
+  npx shadcn-ui@latest add sheet
+```
