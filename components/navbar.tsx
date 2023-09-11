@@ -30,7 +30,7 @@ export const Navbar = () => {
           </h1>
         </Link>
       </div>
-      <UserButton />
+      <UserButton afterSignOutUrl="/" />
       <div className="flex items-center gap-x-3">
         <Button variant="premium" size="sm">
           Premium

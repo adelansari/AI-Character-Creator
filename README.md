@@ -201,3 +201,10 @@ npm i next-cloudinary
 npm i axios
 npx shadcn-ui@latest add toast
 ```
+
+
+### Creating chat ui
+
+```sh
+npm i ai
+```
