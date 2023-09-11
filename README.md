@@ -208,3 +208,28 @@ npx shadcn-ui@latest add toast
 ```sh
 npm i ai
 ```
+
+### Creating a memory service
+
+```sh
+npm i @pinecone-database/pinecone
+npm i @upstash/redis
+npm i @upstash/ratelimit
+npm i langchain
+```
+
+Setting up Pinecone:
+Name: character
+Dimentions: 1536
+
+Adding environmental variables for Pinecone, Upstash and OpenAI
+```sh
+PINECONE_INDEX="character"
+PINECONE_ENVIRONMENT="gcX-XXXXXX"
+PINECONE_API_KEY="dccXXX-XXX-XXX-XXXX-XXXXX"
+
+UPSTASH_REDIS_REST_URL="https://XXXXXXXXXXXXXXXXXXXXXXX"
+UPSTASH_REDIS_REST_TOKEN="XXXXXXXXXXXXXXXXXxxx"
+
+OPENAI_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXX
+```
