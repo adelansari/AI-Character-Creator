@@ -238,3 +238,9 @@ Setting up stripe:
 ```sh
 stripe listen --forward-to localhost:3000/api/webhook
 ```
+
+Stripe UI:
+```sh
+npm i zustand
+npx shadcn-ui@latest add dialog
+```
