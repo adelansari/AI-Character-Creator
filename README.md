@@ -233,3 +233,8 @@ UPSTASH_REDIS_REST_TOKEN="XXXXXXXXXXXXXXXXXxxx"
 
 OPENAI_API_KEY=sk-XXXXXXXXXXXXXXXXXXXXXX
 ```
+
+Setting up stripe:
+```sh
+stripe listen --forward-to localhost:3000/api/webhook
+```
