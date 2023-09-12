@@ -33,7 +33,7 @@ export const Characters = ({ data }: CharactersProps) => {
           className="bg-primary/10 rounded-xl cursor-pointer hover:opacity-75 transition border-0"
         >
           <Link href={`/chat/${item.id}`}>
-            <CardHeader className="flex items-center justify-center text-center text-muted-foreground">
+            <CardHeader className="flex items-center justify-center text-center">
               <div className="relative w-32 h-32">
                 <Image
                   src={item.src}
@@ -43,7 +43,9 @@ export const Characters = ({ data }: CharactersProps) => {
                 />
               </div>
               <p className="font-bold">{item.name}</p>
-              <p className="text-xs">{item.description}</p>
+              <p className="text-xs text-muted-foreground">
+                {item.description}
+              </p>
             </CardHeader>
             <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
               <p className="lowercase">@{item.userName}</p>
