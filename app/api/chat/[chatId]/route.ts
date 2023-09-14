@@ -1,4 +1,4 @@
-// import dotenv from "dotenv";
+import dotenv from "dotenv";
 import { StreamingTextResponse, LangChainStream } from "ai";
 import { auth, currentUser } from "@clerk/nextjs";
 import { Replicate } from "langchain/llms/replicate";
@@ -9,7 +9,7 @@ import { StorageManager } from "@/lib/storage";
 import { rateLimit } from "@/lib/rate-limit";
 import prismadb from "@/lib/prismadb";
 
-// dotenv.config({ path: `.env` });
+dotenv.config({ path: `.env` });
 
 export async function POST(
   request: Request,
@@ -101,9 +101,21 @@ export async function POST(
     // Turn verbose on for debugging
     model.verbose = true;
 
+    // Create a timeout function that takes a time limit and a promise as arguments
+    const timeout = <T>(timeLimit: number, promise: Promise<T>) => {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Request timed out")), timeLimit)
+        ),
+      ]);
+    };
+
+    // Wrap the Replicate call with the timeout function and set the time limit to 20s
     const resp = String(
-      await model
-        .call(
+      await timeout(
+        25000,
+        model.call(
           `
         ONLY generate plain sentences without prefix of who is speaking. DO NOT use ${character.name}: prefix. 
 
@@ -115,7 +127,7 @@ export async function POST(
 
         ${recentChatHistory}\n${character.name}:`
         )
-        .catch(console.error)
+      ).catch(console.error)
     );
 
     const cleaned = resp.replaceAll(",", "");

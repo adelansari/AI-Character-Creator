@@ -8,6 +8,7 @@ import { useCompletion } from "ai/react";
 import { ChatForm } from "@/components/chat-form";
 import { ChatMessages } from "@/components/chat-messages";
 import { ChatMessageProps } from "@/components/chat-message";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ChatClientProps {
   character: Character & {
@@ -23,6 +24,8 @@ export const ChatClient = ({ character }: ChatClientProps) => {
   const [messages, setMessages] = useState<ChatMessageProps[]>(
     character.messages
   );
+
+  const { toast } = useToast();
 
   const { input, isLoading, handleInputChange, handleSubmit, setInput } =
     useCompletion({
@@ -40,7 +43,9 @@ export const ChatClient = ({ character }: ChatClientProps) => {
       },
     });
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // prevent the default form submission
+
     const userMessage: ChatMessageProps = {
       role: "user",
       content: input,
@@ -48,7 +53,31 @@ export const ChatClient = ({ character }: ChatClientProps) => {
 
     setMessages((current) => [...current, userMessage]);
 
-    handleSubmit(e);
+    // adding a timeout to the fetch request
+    const timeoutDuration = 20000;
+    const fetchTimeout = setTimeout(() => {
+      toast({
+        description: "Character response timed out. Please try again later.",
+        duration: 19000,
+        variant: "destructive",
+      });
+    }, timeoutDuration);
+
+    try {
+      // Send the request
+      await handleSubmit(e);
+      // Clear the timeout if the request succeeds
+      clearTimeout(fetchTimeout);
+    } catch (error) {
+      console.error("Error:", error);
+
+      toast({
+        description:
+          "An error occurred while processing your request. Please try again later.",
+        duration: 20000,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
