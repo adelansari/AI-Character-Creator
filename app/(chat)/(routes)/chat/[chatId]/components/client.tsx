@@ -27,21 +27,26 @@ export const ChatClient = ({ character }: ChatClientProps) => {
 
   const { toast } = useToast();
 
-  const { input, isLoading, handleInputChange, handleSubmit, setInput } =
-    useCompletion({
-      api: `/api/chat/${character.id}`,
-      onFinish(_prompt, completion) {
-        const systemMessage: ChatMessageProps = {
-          role: "system",
-          content: completion,
-        };
+  const {
+    input,
+    isLoading,
+    handleInputChange,
+    handleSubmit: handleCompletionSubmit,
+    setInput,
+  } = useCompletion({
+    api: `/api/chat/${character.id}`,
+    onFinish(_prompt, completion) {
+      const systemMessage: ChatMessageProps = {
+        role: "system",
+        content: completion,
+      };
 
-        setMessages((current) => [...current, systemMessage]);
-        setInput("");
+      setMessages((current) => [...current, systemMessage]);
+      setInput("");
 
-        router.refresh();
-      },
-    });
+      router.refresh();
+    },
+  });
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent the default form submission
@@ -65,21 +70,26 @@ export const ChatClient = ({ character }: ChatClientProps) => {
 
     try {
       // Send the request
-      await handleSubmit(e);
+      await handleCompletionSubmit(e);
       // Clear the timeout if the request succeeds
       clearTimeout(fetchTimeout);
     } catch (error) {
       console.error("Error:", error);
 
+      let description =
+        "An error occurred while processing your request. Please try again later.";
+      if (error instanceof Error && error.message.includes("504")) {
+        description =
+          "The server took too long to process the request. Please try again later.";
+      }
+
       toast({
-        description:
-          "An error occurred while processing your request. Please try again later.",
+        description,
         duration: 20000,
         variant: "destructive",
       });
     }
   };
-
   return (
     <div className="flex flex-col h-full p-4 space-y-2">
       <ChatHeader character={character} />
