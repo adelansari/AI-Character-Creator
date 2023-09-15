@@ -3,10 +3,15 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { Replicate } from "langchain/llms/replicate";
 import { CallbackManager } from "langchain/callbacks";
 import { NextResponse } from "next/server";
-
 import { StorageManager } from "@/lib/storage";
 import { rateLimit } from "@/lib/rate-limit";
 import prismadb from "@/lib/prismadb";
+import NodeCache from "node-cache";
+
+const cache = new NodeCache({
+  stdTTL: 60 * 60, // The standard live time in seconds for every generated cache element.
+  checkperiod: 120, // The period in seconds, as a number, used for the automatic delete check interval.
+});
 
 export async function POST(
   request: Request,
@@ -108,10 +113,16 @@ export async function POST(
       ]);
     };
 
+    const cacheKey = `${params.chatId}-${prompt}`;
+    const cachedResponse = cache.get(cacheKey);
+    if (cachedResponse && typeof cachedResponse === "string") {
+      return new NextResponse(cachedResponse);
+    }
+
     // Wrap the Replicate call with the timeout function and set the time limit to 20s
     const resp = String(
       await timeout(
-        25000,
+        20000,
         model.call(
           `
         ONLY generate plain sentences without prefix of who is speaking. DO NOT use ${character.name}: prefix. 
@@ -126,6 +137,9 @@ export async function POST(
         )
       ).catch(console.error)
     );
+
+    // Store the result in the cache
+    cache.set(cacheKey, resp);
 
     const cleaned = resp.replaceAll(",", "");
     const chunks = cleaned.split("\n");
@@ -156,7 +170,7 @@ export async function POST(
       });
     }
 
-    return new StreamingTextResponse(s);
+    return new NextResponse(resp);
   } catch (error) {
     if (error instanceof Error && error.message === "Request timed out") {
       return new NextResponse("Gateway Timeout", { status: 504 });
