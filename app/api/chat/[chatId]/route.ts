@@ -172,7 +172,7 @@ export async function POST(
 
     return new NextResponse(resp);
   } catch (error) {
-    if (error instanceof Error && error.message === "Request timed out") {
+    if (error instanceof Error && error.message.includes("504")) {
       return new NextResponse("Gateway Timeout", { status: 504 });
     }
     return new NextResponse("Internal Error", { status: 500 });
